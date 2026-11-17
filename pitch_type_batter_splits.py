@@ -1,3 +1,5 @@
+#Use this script to get batter splits by pitch type for a given player in 2026.
+
 from pybaseball import statcast, playerid_lookup, cache, statcast_batter
 from pybaseball.playerid_lookup import get_lookup_table
 import pandas as pd
@@ -7,7 +9,10 @@ everyone_df = get_lookup_table()
 everyone_df = everyone_df[everyone_df['mlb_played_last'] == 2026.0]
 print(everyone_df)
 
-player_info_batter = playerid_lookup('harper', 'bryce', fuzzy=True)
+last_name = input("Enter player's last name: ")
+first_name = input("Enter player's first name: ")
+
+player_info_batter = playerid_lookup(last_name, first_name, fuzzy=True)
 
 atbat_outcomes = statcast_batter('2026-03-26', '2026-12-31', player_info_batter['key_mlbam'][0])
 atbat_outcomes.reset_index(drop=True,inplace=True)
@@ -34,4 +39,5 @@ grouped['AVG'] = grouped['H'] / grouped['AB']
 grouped['OBP'] = (grouped['H'] + grouped['BB'] + grouped['HBP'])/(grouped['AB'] + grouped['BB'] + grouped['HBP'] + grouped['SF'])
 grouped['SLG'] = grouped['TB'] / grouped['AB']
 grouped['OPS'] = grouped['OBP'] + grouped['SLG']
-print(grouped)
+print(f"2026 batter splits by pitch type for {first_name} {last_name}:")
+print(grouped.sort_values(by='AB', ascending=False))
