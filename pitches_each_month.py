@@ -1,3 +1,5 @@
+#Are pitchces getting slower as the year progresses? Are certain pitches being thrown more?
+
 from utils import get_players_played_in_year, all_pitches
 import pandas as pd
 
