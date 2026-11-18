@@ -75,10 +75,9 @@ def game_outcomes(year: int):
     Returns a dataframe of all game outcomes between the given start and end dates.
     """
     from pybaseball import schedule_and_record
-    games_df = pd.DataFrame()
+    frames = []
     for team in team_dict.keys():
         time.sleep(2)
-        code = team
         if year >= 2025 and team == 'OAK':
             code = 'ATH'
         elif year < 2025 and team == 'ATH':
@@ -91,5 +90,12 @@ def game_outcomes(year: int):
             print(f"Error fetching data for {code} in {year}: {e}")
             traceback.print_exc()
             continue
-        games_df = pd.concat([games_df, games], ignore_index=True)
+        frames.append(games)
+    games_df = pd.concat(frames, ignore_index=True)
+    games_df['game_num'] = (
+        games_df['Date'].str.extract(r'\((\d+)\)$')[0].fillna(1).astype(int)
+    )
+    clean = games_df['Date'].str.replace(r'\s*\(\d+\)$', '', regex=True)
+    games_df['date'] = pd.to_datetime(clean + f', {year}', format="%A, %b %d, %Y")
+    games_df.drop(columns=['Date'],inplace=True)
     return games_df
