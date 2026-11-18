@@ -5,3 +5,5 @@
 #what is the most exciting stadium to go to? based on triples, home runs, and strikeouts, etc. attribute an excitement score
 #what was the most exciting game of the year? based on lead changes, home runs, triples, strikeouts, stolen bases, etc. attribute an excitment score
 #are triples declining over the years? what about sac flies?
+# #what teams played in the longest games?
+# #how does home attendance improve as W-L record improves?
