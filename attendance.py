@@ -76,19 +76,16 @@ home_team_attendance_norms['capacity'] = home_team_attendance_norms['home'].map(
 home_team_attendance_norms['pct_capacity'] = home_team_attendance_norms['mean'] / home_team_attendance_norms['capacity']
 print('Attendance norms for home teams:')
 print(home_team_attendance_norms.sort_values(by='pct_capacity', ascending=False))
-print(home_team_attendance_norms.columns.tolist())
 
 #define road norms
 road_team_attendance_norms = games.groupby('away')['Attendance'].agg(['mean','std','min','max']).reset_index()
 print('Attendance norms for road teams:')
 print(road_team_attendance_norms.sort_values(by='mean', ascending=False))
-print(road_team_attendance_norms.columns.tolist())
 
 #matchup attendance splits
 matchup_attendance_splits = games.groupby(['home','away'])['Attendance'].agg(['count','mean','std','min','max']).reset_index()
 print('Attendance splits by matchup:')
 print(matchup_attendance_splits.sort_values(by='mean', ascending=False))
-print(matchup_attendance_splits.columns.tolist())
 
 #merged df for delta between matchup attendance and home team attendance norms
 merged = pd.merge(matchup_attendance_splits, home_team_attendance_norms, on='home', how='inner', suffixes=('_matchup','_home_norm'))
