@@ -10,7 +10,7 @@ pd.set_option('display.expand_frame_repr', False)
 
 #setting up df
 games = game_outcomes(2026)
-games.drop_duplicates(subset=['Date','Win','Loss','Time','Attendance'], keep='first', inplace=True)
+games.drop_duplicates(subset=['date','Win','Loss','Time','Attendance'], keep='first', inplace=True)
 games.reset_index(drop=True, inplace=True)
 
 #refactor df for home and away teams
@@ -20,7 +20,7 @@ games['home'] = np.where(is_away, games['Opp'], games['Tm'])
 games.drop(columns=['Tm','Opp','Home_Away'], inplace=True)
 
 #filter out unnecessary columns
-games = games[['Date','away','home','W/L','R','RA','Inn','W-L','Rank','GB','Win','Loss','Save','Time','D/N','Attendance','cLI','Streak','Orig. Scheduled']]
+games = games[['date','away','home','W/L','R','RA','Inn','W-L','Rank','GB','Win','Loss','Save','Time','D/N','Attendance','cLI','Streak','Orig. Scheduled']]
 
 neutral_site_games = [
     ('2026-09-27', 'BOS'),
@@ -34,7 +34,8 @@ neutral_site_games = [
     ('2026-06-14', 'ATH'),
 ]
 
-key = pd.MultiIndex.from_frame(games[['Date', 'home']])
+# filter out neutral site games
+key = pd.MultiIndex.from_frame(games[['date', 'home']])
 games['neutral_site'] = key.isin(neutral_site_games)
 games = games[~games['neutral_site']]
 print('2026 MLB games dataset:')
